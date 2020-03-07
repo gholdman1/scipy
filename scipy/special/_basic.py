@@ -645,6 +645,24 @@ def jvp(v, z, n=1):
     .. [2] NIST Digital Library of Mathematical Functions.
            https://dlmf.nist.gov/10.6.E7
 
+    Examples
+    --------
+    Compute the first derivative of the v=2 Bessel Function of the first kind at z=1.
+
+    >>> from scipy import special
+    >>> v=2
+    >>> z=1
+    >>> result = special.jvp(v, z)
+    >>> result
+    0.21024361588113258
+
+    Using the recurrence relation found in Formula 10.6.1 in Reference [1]
+    we can perform a sanity check.
+
+    >>> special.jv(v-1, z)-special.jv(v+1, z)
+    0.42048723176226516
+    >>> 2*result
+    0.42048723176226516
     """
     n = _nonneg_int_or_fail(n, 'n')
     if n == 0:
@@ -685,6 +703,15 @@ def yvp(v, z, n=1):
     .. [2] NIST Digital Library of Mathematical Functions.
            https://dlmf.nist.gov/10.6.E7
 
+    Examples
+    --------
+    Compute the first derivative of the v=2 Bessel function of the second kind  at z=1.
+
+    >>> from scipy import special
+    >>> v=2
+    >>> z=1
+    >>> special.yvp(v, z)
+    2.520152392332221
     """
     n = _nonneg_int_or_fail(n, 'n')
     if n == 0:
@@ -1022,6 +1049,17 @@ def fresnelc_zeros(nt):
            Functions", John Wiley and Sons, 1996.
            https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 
+    Examples
+    --------
+    Compute first three zeros of cosine Fresnel integral C(z) and confirm they are zeros.
+
+    >>> from scipy.special import fresnelc_zeros, fresnel
+    >>> zeros = fresnelc_zeros(3)
+    >>> fresnel(zeros)[1]
+    array([ 1.92907324e-16-1.82360812e-15j, 3.90027380e-16-3.98314126e-16j,
+       -1.05564305e-16+2.65452517e-15j])
+
+    Note that fresnel returns a tuple for which C(z) is the second entry.
     """
     if (floor(nt) != nt) or (nt <= 0) or not isscalar(nt):
         raise ValueError("Argument must be positive scalar integer.")
@@ -1037,6 +1075,17 @@ def fresnels_zeros(nt):
            Functions", John Wiley and Sons, 1996.
            https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 
+    Examples
+    --------
+    Compute first three zeros of sine Fresnel integral S(z) and confirm they are zeros.
+
+    >>> from scipy.special import fresnels_zeros, fresnel
+    >>> zeros = fresnels_zeros(3)
+    >>> fresnel(zeros)[0]
+    array([ 3.83246190e-16-4.08508532e-16j,  1.10970456e-16-1.32507037e-15j,
+       -5.14042545e-16-9.97392255e-16j])
+
+    Note that fresnel returns a tuple for which S(z) is the first entry.
     """
     if (floor(nt) != nt) or (nt <= 0) or not isscalar(nt):
         raise ValueError("Argument must be positive scalar integer.")
@@ -1069,6 +1118,18 @@ def assoc_laguerre(x, n, k=0.0):
     `assoc_laguerre` is a simple wrapper around `eval_genlaguerre`, with
     reversed argument order ``(x, n, k=0.0) --> (n, k, x)``.
 
+    Examples
+    --------
+    Calculate the n=2 Laguerre polynomial at x=1
+    >>> from scipy.special import assoc_laguerre
+    >>> assoc_laguerre(1, 2)
+    -0.5
+
+    Calculate the n=2, k=3 Laguerre polynomial at x=1
+
+    >>> from scipy.special import assoc_laguerre
+    >>> assoc_laguerre(1, 2, 3)
+    5.5
     """
     return orthogonal.eval_genlaguerre(n, k, x)
 
